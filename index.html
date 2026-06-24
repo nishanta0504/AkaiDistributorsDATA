@@ -3,112 +3,492 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register – Exclusive Deals</title>
+<title>Register for Exclusive Offers</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:    #0d9e8f;
+    --teal2:   #0bb8a6;
+    --teal-lt: #e6f7f5;
+    --navy:    #1e2d3d;
+    --navy2:   #243358;
+    --gold:    #f5a623;
+    --white:   #ffffff;
+    --bg:      #f0f4f8;
+    --muted:   #8a94a6;
+    --text:    #1e293b;
+    --border:  #e2e8f0;
+    --sidebar: #1e2d3d;
+  }
+
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
     min-height: 100vh;
+    display: flex;
+    color: var(--text);
+    font-size: 14px;
+  }
+
+  /* ═══ LEFT PANEL ═══════════════════════════════════════════════ */
+  .left-panel {
+    width: 380px;
+    background: var(--sidebar);
+    min-height: 100vh;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Decorative circles */
+  .left-panel::before {
+    content: '';
+    position: absolute;
+    width: 340px; height: 340px;
+    border-radius: 50%;
+    background: rgba(13,158,143,.1);
+    top: -80px; left: -80px;
+    pointer-events: none;
+  }
+  .left-panel::after {
+    content: '';
+    position: absolute;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(13,158,143,.12);
+    bottom: 60px; right: -80px;
+    pointer-events: none;
+  }
+
+  .panel-inner {
+    padding: 36px 36px 36px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Logo */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 52px;
+  }
+  .brand-icon {
+    width: 38px; height: 38px;
+    background: var(--teal);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .brand-name {
+    font-size: 15px; font-weight: 700; color: #fff;
+  }
+  .brand-tag {
+    font-size: 10px; color: rgba(255,255,255,.4); margin-top: 1px;
+  }
+
+  /* Watch showcase */
+  .watch-showcase {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .watch-ring {
+    width: 130px; height: 130px;
+    border-radius: 50%;
+    background: rgba(13,158,143,.08);
+    border: 2px solid rgba(13,158,143,.2);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 68px;
+    position: relative;
+  }
+  .watch-ring::before {
+    content: '';
+    position: absolute;
+    inset: -9px;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(13,158,143,.18);
+  }
+
+  .panel-heading {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .panel-heading span { color: var(--teal2); }
+
+  .panel-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,.5);
+    line-height: 1.65;
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  /* Benefits */
+  .benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: auto;
+  }
+  .benefit {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .benefit-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(13,158,143,.15);
+    border: 1px solid rgba(13,158,143,.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .benefit-text strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,.9);
+    margin-bottom: 2px;
+  }
+  .benefit-text span {
+    font-size: 11px;
+    color: rgba(255,255,255,.4);
+  }
+
+  /* Dealer pill */
+  .dealer-pill {
+    margin-top: 24px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(13,158,143,.15);
+    border: 1px solid rgba(13,158,143,.3);
+    color: var(--teal2);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 20px;
+  }
+
+  /* ═══ RIGHT PANEL (FORM) ═══════════════════════════════════════ */
+  .right-panel {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 40px 32px;
+    background: var(--bg);
   }
-  .card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 36px 32px;
+
+  .form-card {
+    background: var(--white);
+    border-radius: 20px;
     width: 100%;
     max-width: 420px;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 24px rgba(0,0,0,.07), 0 1px 4px rgba(0,0,0,.04);
+    overflow: hidden;
   }
-  .logo { text-align: center; margin-bottom: 8px; font-size: 36px; }
-  h1 { text-align: center; font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
-  .subtitle { text-align: center; font-size: 14px; color: #6b7280; margin-bottom: 28px; }
-  .badge {
-    background: #ecfdf5; color: #065f46;
-    font-size: 12px; font-weight: 600;
-    padding: 4px 12px; border-radius: 20px;
-    display: inline-block; margin-bottom: 6px;
+
+  /* Form top accent */
+  .form-accent {
+    height: 4px;
+    background: linear-gradient(90deg, var(--teal), var(--teal2));
   }
-  label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
-  input {
-    width: 100%; padding: 12px 14px;
-    border: 1.5px solid #e5e7eb; border-radius: 10px;
-    font-size: 15px; color: #111; margin-bottom: 16px;
-    outline: none; transition: border-color 0.2s;
+
+  .form-header {
+    padding: 28px 28px 6px;
   }
-  input:focus { border-color: #0f3460; box-shadow: 0 0 0 3px rgba(15,52,96,0.1); }
-  .hidden { display: none; }
-  button {
-    width: 100%; padding: 14px;
-    background: #0f3460; color: #fff;
-    border: none; border-radius: 10px;
-    font-size: 16px; font-weight: 600;
-    cursor: pointer; transition: background 0.2s, transform 0.1s;
+  .form-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--navy);
+    margin-bottom: 4px;
   }
-  button:hover { background: #16213e; }
-  button:active { transform: scale(0.98); }
-  button:disabled { background: #9ca3af; cursor: not-allowed; }
-  .success {
-    text-align: center; padding: 20px 0;
+  .form-title span { color: var(--teal); }
+  .form-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Divider */
+  .form-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 28px 0;
+  }
+
+  .form-body { padding: 22px 28px 6px; }
+
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .7px;
+    margin-bottom: 7px;
+  }
+  .field label .lbl-icon { font-size: 13px; }
+
+  .input-wrap { position: relative; }
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"] {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px 0 42px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--navy);
+    background: #fafbfd;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+  }
+  input:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(13,158,143,.1);
+    background: #fff;
+  }
+  input::placeholder { color: #c0c8d4; font-size: 13px; }
+  .input-icon {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    pointer-events: none;
+  }
+
+  .form-footer { padding: 6px 28px 28px; }
+
+  .btn-submit {
+    width: 100%;
+    height: 50px;
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    border-radius: 11px;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: .2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(13,158,143,.35);
+    transition: background .2s, box-shadow .2s, transform .1s;
+  }
+  .btn-submit:hover { background: var(--teal2); box-shadow: 0 6px 22px rgba(13,158,143,.45); }
+  .btn-submit:active { transform: scale(.98); }
+  .btn-submit:disabled { background: #c8d0de; box-shadow: none; cursor: not-allowed; color: #8a94a6; }
+
+  .register-label {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.1px;
+    color: var(--muted);
+  }
+
+  .form-privacy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #b0bac8;
+    padding: 14px 28px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 16px;
+  }
+
+  /* SUCCESS */
+  .success-box {
     display: none;
+    padding: 56px 28px;
+    text-align: center;
   }
-  .success .icon { font-size: 48px; margin-bottom: 12px; }
-  .success h2 { font-size: 20px; color: #1a1a2e; margin-bottom: 6px; }
-  .success p { font-size: 14px; color: #6b7280; }
-  .dealer-tag {
-    background: #f0f9ff; color: #0369a1;
-    font-size: 11px; border-radius: 6px;
-    padding: 3px 8px; display: inline-block; margin-bottom: 20px;
+  .success-icon {
+    width: 74px; height: 74px;
+    background: var(--teal-lt);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 34px;
+    margin: 0 auto 20px;
+    border: 2px solid rgba(13,158,143,.2);
   }
-  .privacy { font-size: 11px; color: #9ca3af; text-align: center; margin-top: 14px; }
-  .spinner { display: none; }
-  button.loading .btn-text { display: none; }
-  button.loading .spinner { display: inline; }
+  .success-box h2 { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 8px; }
+  .success-box p  { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* SPINNER */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spin-el {
+    display: none;
+    width: 18px; height: 18px;
+    border: 2.5px solid rgba(255,255,255,.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  .btn-submit.loading .btn-text { display: none; }
+  .btn-submit.loading .spin-el  { display: block; }
+
+  /* RESPONSIVE */
+  @media (max-width: 820px) {
+    body { flex-direction: column; }
+    .left-panel { width: 100%; min-height: auto; }
+    .panel-inner { padding: 28px 24px; }
+    .benefits { flex-direction: row; flex-wrap: wrap; margin-top: 24px; gap: 10px; }
+    .watch-showcase { margin-bottom: 20px; }
+    .watch-ring { width: 90px; height: 90px; font-size: 44px; }
+    .panel-heading { font-size: 22px; }
+    .right-panel { padding: 28px 20px; }
+  }
+  @media (max-width: 480px) {
+    .right-panel { padding: 20px 14px; }
+    .form-header, .form-body { padding-left: 20px; padding-right: 20px; }
+    .form-footer { padding: 6px 20px 24px; }
+    .form-privacy { padding-left: 20px; padding-right: 20px; }
+  }
 </style>
 </head>
 <body>
-<div class="card">
-  <div class="logo">🎁</div>
-  <h1>Get Exclusive Offers!</h1>
-  <p class="subtitle">Register once, receive daily deals directly on WhatsApp</p>
 
-  <!-- Dealer tag is auto-filled from QR URL parameter -->
-  <div id="dealer-tag" class="dealer-tag" style="display:none">📍 Via: <span id="dealer-name"></span></div>
+<!-- ═══ LEFT PANEL ═══════════════════════════════════════════════ -->
+<div class="left-panel">
+  <div class="panel-inner">
 
-  <form id="regForm">
-    <label for="name">Full Name</label>
-    <input type="text" id="name" placeholder="Your full name" required autocomplete="name">
+    <div class="brand">
+      <div class="brand-icon">⌚</div>
+      <div>
+        <div class="brand-name">Exclusive Offers</div>
+        <div class="brand-tag">Members Portal</div>
+      </div>
+    </div>
 
-    <label for="phone">WhatsApp Number</label>
-    <input type="tel" id="phone" placeholder="+91 98765 43210" required autocomplete="tel">
+    <div class="watch-showcase">
+      <div class="watch-ring">⌚</div>
+      <div class="panel-heading">Get <span>Exclusive</span><br>Offers</div>
+      <div class="panel-sub">Register once, receive daily deals<br>directly on WhatsApp</div>
+    </div>
 
-    <label for="email">Email Address</label>
-    <input type="email" id="email" placeholder="you@email.com" required autocomplete="email">
+    <div class="benefits">
+      <div class="benefit">
+        <div class="benefit-icon">🎁</div>
+        <div class="benefit-text">
+          <strong>Daily Deals</strong>
+          <span>Fresh offers every morning</span>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">⚡</div>
+        <div class="benefit-text">
+          <strong>Instant WhatsApp Alerts</strong>
+          <span>Never miss a deal</span>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">🔒</div>
+        <div class="benefit-text">
+          <strong>100% Private</strong>
+          <span>No spam, unsubscribe anytime</span>
+        </div>
+      </div>
+    </div>
 
-    <input type="hidden" id="dealer_id" name="dealer_id">
-    <input type="hidden" id="dealer_label" name="dealer_label">
+    <div class="dealer-pill" id="dealer-pill">
+      📍 <span id="dealer-pill-text"></span>
+    </div>
 
-    <button type="submit" id="submitBtn">
-      <span class="btn-text">✅ Register for Free Offers</span>
-      <span class="spinner">⏳ Submitting...</span>
-    </button>
-    <p class="privacy">🔒 Your data is private. We only send you deals — no spam.</p>
-  </form>
+  </div>
+</div>
 
-  <div class="success" id="successBox">
-    <div class="icon">🎉</div>
-    <h2>You're Registered!</h2>
-    <p>Watch out for our daily deals on WhatsApp.<br>Thank you for joining!</p>
+<!-- ═══ RIGHT PANEL ═══════════════════════════════════════════════ -->
+<div class="right-panel">
+  <div class="form-card">
+
+    <div class="form-accent"></div>
+
+    <div class="form-header">
+      <div class="form-title">Create Your <span>Account</span></div>
+      <div class="form-desc">Fill in your details below to start receiving offers</div>
+    </div>
+
+    <div class="form-divider"></div>
+
+    <form id="regForm">
+      <div class="form-body">
+
+        <div class="field">
+          <label><span class="lbl-icon">👤</span> Full Name</label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input type="text" id="name" placeholder="Enter your full name" required autocomplete="name">
+          </div>
+        </div>
+
+        <div class="field">
+          <label><span class="lbl-icon">📱</span> WhatsApp Number</label>
+          <div class="input-wrap">
+            <span class="input-icon">📱</span>
+            <input type="tel" id="phone" placeholder="+91 98765 43210" required autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="field">
+          <label><span class="lbl-icon">✉️</span> Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="email" placeholder="you@email.com" required autocomplete="email">
+          </div>
+        </div>
+
+        <input type="hidden" id="dealer_id">
+        <input type="hidden" id="dealer_label">
+
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" id="submitBtn" class="btn-submit">
+          <span class="btn-text">Register for Exclusive Offers →</span>
+          <div class="spin-el"></div>
+        </button>
+        <div class="register-label">Register for Many Offers</div>
+        <div class="form-privacy">🔒 Your data is private — offers only, no spam</div>
+      </div>
+    </form>
+
+    <div class="success-box" id="successBox">
+      <div class="success-icon">✅</div>
+      <h2>You're All Set!</h2>
+      <p>Welcome aboard! Watch for our daily<br>deals on WhatsApp. Thank you for joining!</p>
+    </div>
+
   </div>
 </div>
 
 <script>
-  // ── READ DEALER ID FROM QR URL ──────────────────────────────────
-  // Each QR code links to: https://yoursite.com/register?dealer=D001&name=ShopName
-  const params = new URLSearchParams(window.location.search);
+  const params      = new URLSearchParams(window.location.search);
   const dealerId    = params.get('dealer') || 'DIRECT';
   const dealerLabel = params.get('name')   || 'Direct';
 
@@ -116,16 +496,14 @@
   document.getElementById('dealer_label').value = dealerLabel;
 
   if (dealerLabel !== 'Direct') {
-    document.getElementById('dealer-name').textContent = dealerLabel;
-    document.getElementById('dealer-tag').style.display = 'inline-block';
+    document.getElementById('dealer-pill-text').textContent = dealerLabel;
+    document.getElementById('dealer-pill').style.display    = 'flex';
   }
 
-  // ── REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT WEB APP URL ──
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5XyxvD9WRwvEkd0DWako4Oubvnsn5PjpVVw-EDNEPlj2FD1E4d7m-ixywtbD5PkJpXA/exec';
 
   document.getElementById('regForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.classList.add('loading');
@@ -142,17 +520,13 @@
 
     try {
       await fetch(APPS_SCRIPT_URL, {
-        method:  'POST',
-        mode:    'no-cors',   // Google Apps Script requires this
+        method: 'POST', mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload)
+        body: JSON.stringify(payload)
       });
-
-      // no-cors means we can't read the response — assume success
-      document.getElementById('regForm').style.display  = 'none';
+      document.getElementById('regForm').style.display    = 'none';
       document.getElementById('successBox').style.display = 'block';
-
-    } catch (err) {
+    } catch(err) {
       alert('Something went wrong. Please try again.');
       btn.disabled = false;
       btn.classList.remove('loading');
