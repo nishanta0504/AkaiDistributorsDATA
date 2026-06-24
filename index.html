@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register – Exclusive Deals</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 36px 32px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+  }
+  .logo { text-align: center; margin-bottom: 8px; font-size: 36px; }
+  h1 { text-align: center; font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+  .subtitle { text-align: center; font-size: 14px; color: #6b7280; margin-bottom: 28px; }
+  .badge {
+    background: #ecfdf5; color: #065f46;
+    font-size: 12px; font-weight: 600;
+    padding: 4px 12px; border-radius: 20px;
+    display: inline-block; margin-bottom: 6px;
+  }
+  label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+  input {
+    width: 100%; padding: 12px 14px;
+    border: 1.5px solid #e5e7eb; border-radius: 10px;
+    font-size: 15px; color: #111; margin-bottom: 16px;
+    outline: none; transition: border-color 0.2s;
+  }
+  input:focus { border-color: #0f3460; box-shadow: 0 0 0 3px rgba(15,52,96,0.1); }
+  .hidden { display: none; }
+  button {
+    width: 100%; padding: 14px;
+    background: #0f3460; color: #fff;
+    border: none; border-radius: 10px;
+    font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: background 0.2s, transform 0.1s;
+  }
+  button:hover { background: #16213e; }
+  button:active { transform: scale(0.98); }
+  button:disabled { background: #9ca3af; cursor: not-allowed; }
+  .success {
+    text-align: center; padding: 20px 0;
+    display: none;
+  }
+  .success .icon { font-size: 48px; margin-bottom: 12px; }
+  .success h2 { font-size: 20px; color: #1a1a2e; margin-bottom: 6px; }
+  .success p { font-size: 14px; color: #6b7280; }
+  .dealer-tag {
+    background: #f0f9ff; color: #0369a1;
+    font-size: 11px; border-radius: 6px;
+    padding: 3px 8px; display: inline-block; margin-bottom: 20px;
+  }
+  .privacy { font-size: 11px; color: #9ca3af; text-align: center; margin-top: 14px; }
+  .spinner { display: none; }
+  button.loading .btn-text { display: none; }
+  button.loading .spinner { display: inline; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">🎁</div>
+  <h1>Get Exclusive Offers!</h1>
+  <p class="subtitle">Register once, receive daily deals directly on WhatsApp</p>
+
+  <!-- Dealer tag is auto-filled from QR URL parameter -->
+  <div id="dealer-tag" class="dealer-tag" style="display:none">📍 Via: <span id="dealer-name"></span></div>
+
+  <form id="regForm">
+    <label for="name">Full Name</label>
+    <input type="text" id="name" placeholder="Your full name" required autocomplete="name">
+
+    <label for="phone">WhatsApp Number</label>
+    <input type="tel" id="phone" placeholder="+91 98765 43210" required autocomplete="tel">
+
+    <label for="email">Email Address</label>
+    <input type="email" id="email" placeholder="you@email.com" required autocomplete="email">
+
+    <input type="hidden" id="dealer_id" name="dealer_id">
+    <input type="hidden" id="dealer_label" name="dealer_label">
+
+    <button type="submit" id="submitBtn">
+      <span class="btn-text">✅ Register for Free Offers</span>
+      <span class="spinner">⏳ Submitting...</span>
+    </button>
+    <p class="privacy">🔒 Your data is private. We only send you deals — no spam.</p>
+  </form>
+
+  <div class="success" id="successBox">
+    <div class="icon">🎉</div>
+    <h2>You're Registered!</h2>
+    <p>Watch out for our daily deals on WhatsApp.<br>Thank you for joining!</p>
+  </div>
+</div>
+
+<script>
+  // ── READ DEALER ID FROM QR URL ──────────────────────────────────
+  // Each QR code links to: https://yoursite.com/register?dealer=D001&name=ShopName
+  const params = new URLSearchParams(window.location.search);
+  const dealerId    = params.get('dealer') || 'DIRECT';
+  const dealerLabel = params.get('name')   || 'Direct';
+
+  document.getElementById('dealer_id').value    = dealerId;
+  document.getElementById('dealer_label').value = dealerLabel;
+
+  if (dealerLabel !== 'Direct') {
+    document.getElementById('dealer-name').textContent = dealerLabel;
+    document.getElementById('dealer-tag').style.display = 'inline-block';
+  }
+
+  // ── REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT WEB APP URL ──
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx5XyxvD9WRwvEkd0DWako4Oubvnsn5PjpVVw-EDNEPlj2FD1E4d7m-ixywtbD5PkJpXA/exec';
+
+  document.getElementById('regForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.classList.add('loading');
+
+    const payload = {
+      name:         document.getElementById('name').value.trim(),
+      phone:        document.getElementById('phone').value.trim(),
+      email:        document.getElementById('email').value.trim(),
+      dealer_id:    dealerId,
+      dealer_label: dealerLabel,
+      timestamp:    new Date().toISOString(),
+      source:       'QR_SCAN'
+    };
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method:  'POST',
+        mode:    'no-cors',   // Google Apps Script requires this
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload)
+      });
+
+      // no-cors means we can't read the response — assume success
+      document.getElementById('regForm').style.display  = 'none';
+      document.getElementById('successBox').style.display = 'block';
+
+    } catch (err) {
+      alert('Something went wrong. Please try again.');
+      btn.disabled = false;
+      btn.classList.remove('loading');
+    }
+  });
+</script>
+</body>
+</html>
